@@ -1,0 +1,76 @@
+flowchart LR
+    %% ==========================================================
+    %% ENTITAS (Kotak Persegi Panjang - Horisontal Seperti Gambar)
+    %% ==========================================================
+    SISWA["<br>&nbsp;&nbsp;&nbsp;&nbsp;<b>SISWA</b>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>"]
+    SARANA["<br>&nbsp;&nbsp;&nbsp;&nbsp;<b>SARANA</b>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>"]
+    PETUGAS["<br>&nbsp;&nbsp;&nbsp;&nbsp;<b>PETUGAS</b>&nbsp;&nbsp;&nbsp;&nbsp;<br><br>"]
+
+    %% ==========================================================
+    %% RELASI PENGHUBUNG (Belah Ketupat Murni Tanpa Atribut)
+    %% ==========================================================
+    MELAPORKAN{"Melaporkan"}
+    MEMPERBAIKI{"Memperbaiki"}
+
+    %% ==========================================================
+    %% GARIS HUBUNG UTAMA DENGAN KETERANGAN RELASI (1 : N)
+    %% ==========================================================
+    SISWA -- "1" --- MELAPORKAN
+    MELAPORKAN -- "N" --- SARANA
+
+    SARANA -- "N" --- MEMPERBAIKI
+    MEMPERBAIKI -- "1" --- PETUGAS
+
+    %% ==========================================================
+    %% ATRIBUT SISWA (BENTUK LINGKARAN PENUH (( ... )) )
+    %% ==========================================================
+    id_siswa(( "<u>id_siswa</u>" ))
+    nama_siswa(( "nama_siswa" ))
+    nis(( "nis" ))
+    kelas(( "kelas" ))
+    no_telp_siswa(( "no_telp" ))
+
+    id_siswa --- SISWA
+    nama_siswa --- SISWA
+    nis --- SISWA
+    kelas --- SISWA
+    no_telp_siswa --- SISWA
+
+    %% ==========================================================
+    %% ATRIBUT SARANA (BENTUK LINGKARAN PENUH (( ... )) )
+    %% ==========================================================
+    id_sarana(( "<u>id_sarana</u>" ))
+    nama_sarana(( "nama_sarana" ))
+    lokasi(( "lokasi" ))
+    kondisi(( "kondisi" ))
+
+    id_sarana --- SARANA
+    nama_sarana --- SARANA
+    lokasi --- SARANA
+    kondisi --- SARANA
+
+    %% ==========================================================
+    %% ATRIBUT PETUGAS (BENTUK LINGKARAN PENUH (( ... )) )
+    %% ==========================================================
+    id_petugas(( "<u>id_petugas</u>" ))
+    nama_petugas(( "nama_petugas" ))
+    jabatan(( "jabatan" ))
+    no_telp_petugas(( "no_telp" ))
+
+    id_petugas --- PETUGAS
+    nama_petugas --- PETUGAS
+    jabatan --- PETUGAS
+    no_telp_petugas --- PETUGAS
+
+    %% ==========================================================
+    %% STYLING
+    %% ==========================================================
+    classDef entityStyle font-size:16px,stroke-width:2px;
+    classDef relStyle font-size:13px,stroke-width:2px;
+    classDef attrStyle font-size:12px;
+
+    class SISWA,SARANA,PETUGAS entityStyle;
+    class MELAPORKAN,MEMPERBAIKI relStyle;
+    class id_siswa,nama_siswa,nis,kelas,no_telp_siswa attrStyle;
+    class id_sarana,nama_sarana,lokasi,kondisi attrStyle;
+    class id_petugas,nama_petugas,jabatan,no_telp_petugas attrStyle;
