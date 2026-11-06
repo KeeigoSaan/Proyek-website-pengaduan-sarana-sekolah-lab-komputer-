@@ -141,8 +141,8 @@ php artisan test
 
 Proyek Akhir Web - Kejuruan Rekayasa Perangkat Lunak (RPL):
 - **Nama Peserta Didik:** KEIGO AVREL PURNOMO
-- **Kelas:** XII RPL A / XII RPL 2
-- **Sekolah:** SMK Negeri 5
+- **Kelas:** XII RPL A
+- **Sekolah:** SMK Negeri 5 Solo
 
 ---
 
