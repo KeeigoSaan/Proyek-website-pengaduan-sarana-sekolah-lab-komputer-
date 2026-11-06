@@ -5,11 +5,11 @@
                 {{ $aduan->kode_aduan }}
             </span>
             <span class="px-1.5 py-0.5 border border-black 
-                @if($aduan->kategori->nama_kategori === 'Hardware') bg-[#3D5AFE] text-white 
-                @elseif($aduan->kategori->nama_kategori === 'Software') bg-[#FFE500] text-black 
-                @elseif($aduan->kategori->nama_kategori === 'Jaringan') bg-[#FF3EA5] text-white 
+                @if(($aduan->kategori?->nama_kategori ?? '') === 'Hardware') bg-[#3D5AFE] text-white 
+                @elseif(($aduan->kategori?->nama_kategori ?? '') === 'Software') bg-[#FFE500] text-black 
+                @elseif(($aduan->kategori?->nama_kategori ?? '') === 'Jaringan') bg-[#FF3EA5] text-white 
                 @else bg-[#B4FF00] text-black @endif">
-                {{ $aduan->kategori->nama_kategori }}
+                {{ $aduan->kategori?->nama_kategori ?? 'Umum' }}
             </span>
         </div>
 
@@ -18,11 +18,11 @@
         </h4>
 
         <div class="text-[11px] font-semibold text-neutral-600 mb-1">
-            👤 {{ $aduan->user->name }} @if($aduan->user->kelas) ({{ $aduan->user->kelas }}) @endif
+            👤 {{ $aduan->user?->name ?? 'Anonim' }} @if($aduan->user?->kelas) ({{ $aduan->user->kelas }}) @endif
         </div>
 
         <div class="inline-block bg-[#F5F3EE] border border-black px-1.5 py-0.5 text-[10px] font-bold">
-            🖥️ {{ $aduan->perangkat->kode_perangkat }}
+            🖥️ {{ $aduan->perangkat?->kode_perangkat ?? '-' }}
         </div>
     </div>
 
@@ -38,8 +38,17 @@
             </select>
         </form>
 
-        <a href="{{ route('aduan.show', $aduan->id) }}" class="btn-neo btn-neo-white text-[10px] py-1 border shadow-[1px_1px_0_#0A0A0A] hover:bg-[#FFE500] text-center w-full">
-            DETAIL & TANGGAPAN →
-        </a>
+        <div class="flex items-center gap-1.5">
+            <a href="{{ route('aduan.show', $aduan->id) }}" class="btn-neo btn-neo-white text-[10px] py-1 border shadow-[1px_1px_0_#0A0A0A] hover:bg-[#FFE500] text-center flex-1">
+                DETAIL & TANGGAPAN →
+            </a>
+            <form action="{{ route('admin.aduan.destroy', $aduan->id) }}" method="POST" onsubmit="return confirm('Hapus permanen aduan {{ $aduan->kode_aduan }}?')" class="inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" title="Hapus Aduan Ini" class="btn-neo btn-neo-pink text-[10px] py-1 px-2 border shadow-[1px_1px_0_#0A0A0A] hover:bg-red-600">
+                    🗑️
+                </button>
+            </form>
+        </div>
     </div>
 </div>

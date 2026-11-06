@@ -70,8 +70,12 @@ class AduanController extends Controller
             'foto_bukti.max'        => 'Ukuran foto maksimal 2 MB.',
         ]);
 
-        $count = Aduan::count() + 1;
-        $kodeAduan = 'LAP-' . str_pad($count, 3, '0', STR_PAD_LEFT);
+        $lastId = Aduan::max('id') ?? 0;
+        $nextNumber = $lastId + 1;
+        do {
+            $kodeAduan = 'LAP-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+            $nextNumber++;
+        } while (Aduan::where('kode_aduan', $kodeAduan)->exists());
 
         $fotoPath = null;
         if ($request->hasFile('foto_bukti')) {
@@ -116,11 +120,11 @@ class AduanController extends Controller
         ];
 
         $counts = [
-            'total'       => Aduan::count(),
-            'PENDING'     => Aduan::where('status', 'PENDING')->count(),
-            'IN_PROGRESS' => Aduan::where('status', 'IN_PROGRESS')->count(),
-            'RESOLVED'    => Aduan::where('status', 'RESOLVED')->count(),
-            'REJECTED'    => Aduan::where('status', 'REJECTED')->count(),
+            'total'       => $allAduan->count(),
+            'PENDING'     => $columns['PENDING']->count(),
+            'IN_PROGRESS' => $columns['IN_PROGRESS']->count(),
+            'RESOLVED'    => $columns['RESOLVED']->count(),
+            'REJECTED'    => $columns['REJECTED']->count(),
         ];
 
         return view('admin.dashboard', compact('columns', 'counts'));
@@ -146,17 +150,41 @@ class AduanController extends Controller
 
         $aduan = Aduan::findOrFail($id);
         $oldStatus = $aduan->status;
-        $aduan->status = $request->status;
-        $aduan->save();
 
-        // Automatically record system/admin response note
-        Tanggapan::create([
-            'aduan_id' => $aduan->id,
-            'user_id'  => Auth::id(),
-            'catatan'  => 'Status laporan diubah dari ' . $oldStatus . ' menjadi ' . $request->status . '.',
-        ]);
+        if ($oldStatus !== $request->status) {
+            $aduan->status = $request->status;
+            $aduan->save();
 
-        return back()->with('success', 'Status laporan berhasil diubah menjadi ' . $request->status);
+            // Automatically record system/admin response note
+            Tanggapan::create([
+                'aduan_id' => $aduan->id,
+                'user_id'  => Auth::id(),
+                'catatan'  => 'Status laporan diubah dari ' . $oldStatus . ' menjadi ' . $request->status . '.',
+            ]);
+
+            return back()->with('success', 'Status laporan berhasil diubah menjadi ' . $request->status);
+        }
+
+        return back()->with('info', 'Status laporan tidak berubah.');
+    }
+
+    public function destroy($id)
+    {
+        $aduan = Aduan::findOrFail($id);
+        $kode = $aduan->kode_aduan;
+
+        // Hapus file foto bukti fisik dari storage jika ada
+        if ($aduan->foto_bukti && Storage::disk('public')->exists($aduan->foto_bukti)) {
+            Storage::disk('public')->delete($aduan->foto_bukti);
+        }
+
+        $aduan->delete();
+
+        if (url()->previous() === route('aduan.show', $id)) {
+            return redirect()->route('admin.dashboard')->with('success', "Aduan {$kode} berhasil dihapus permanen!");
+        }
+
+        return back()->with('success', "Aduan {$kode} berhasil dihapus permanen!");
     }
 
     public function storeTanggapan(Request $request, $id)
@@ -228,19 +256,27 @@ class AduanController extends Controller
                 'Status'
             ], ';');
 
+            $sanitizeCsv = function ($val) {
+                $str = preg_replace("/\r|\n/", " ", (string)$val);
+                if (in_array(substr(ltrim($str), 0, 1), ['=', '+', '-', '@'], true)) {
+                    return "'" . $str;
+                }
+                return $str;
+            };
+
             foreach ($aduanList as $index => $aduan) {
                 fputcsv($file, [
                     $index + 1,
                     $aduan->kode_aduan,
                     $aduan->created_at->format('d/m/Y H:i'),
-                    $aduan->user->name ?? '-',
-                    $aduan->user->kelas ?? '-',
+                    $sanitizeCsv($aduan->user->name ?? '-'),
+                    $sanitizeCsv($aduan->user->kelas ?? '-'),
                     $aduan->perangkat->kode_perangkat ?? '-',
-                    $aduan->perangkat->nama_perangkat ?? '-',
-                    $aduan->perangkat->lokasi ?? '-',
+                    $sanitizeCsv($aduan->perangkat->nama_perangkat ?? '-'),
+                    $sanitizeCsv($aduan->perangkat->lokasi ?? '-'),
                     $aduan->kategori->nama_kategori ?? '-',
-                    $aduan->judul,
-                    preg_replace("/\r|\n/", " ", $aduan->deskripsi),
+                    $sanitizeCsv($aduan->judul),
+                    $sanitizeCsv($aduan->deskripsi),
                     $aduan->status,
                 ], ';');
             }

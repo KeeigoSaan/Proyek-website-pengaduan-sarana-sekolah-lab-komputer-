@@ -84,7 +84,7 @@
             <a href="{{ route('siswa.dashboard', ['status' => 'PENDING', 'q' => request('q')]) }}" class="px-3 py-1.5 border-2 border-[#0A0A0A] font-bold {{ request('status') === 'PENDING' ? 'bg-[#FFE500] text-black' : 'bg-white text-black hover:bg-[#FFE500]' }}">
                 PENDING
             </a>
-            <a href="{{ route('siswa.dashboard', ['status' => 'IN_PROGRESS', 'q' => request('q')]) }}" class="px-3 py-1.5 border-2 border-[#0A0A0A] font-bold {{ request('status') === 'IN_PROGRESS' ? 'bg-[#3D5AFE] text-white' : 'bg-white text-black hover:bg-[#3D5AFE] hover:text-white]' }}">
+            <a href="{{ route('siswa.dashboard', ['status' => 'IN_PROGRESS', 'q' => request('q')]) }}" class="px-3 py-1.5 border-2 border-[#0A0A0A] font-bold {{ request('status') === 'IN_PROGRESS' ? 'bg-[#3D5AFE] text-white' : 'bg-white text-black hover:bg-[#3D5AFE] hover:text-white' }}">
                 DIPROSES
             </a>
             <a href="{{ route('siswa.dashboard', ['status' => 'RESOLVED', 'q' => request('q')]) }}" class="px-3 py-1.5 border-2 border-[#0A0A0A] font-bold {{ request('status') === 'RESOLVED' ? 'bg-[#B4FF00] text-black' : 'bg-white text-black hover:bg-[#B4FF00]' }}">

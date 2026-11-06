@@ -102,7 +102,7 @@ class AuthController extends Controller
             ])->withInput();
         }
 
-        if (strtolower($masterSiswa->email_belajar) !== $emailInput) {
+        if (strtolower(trim($masterSiswa->email_belajar)) !== $emailInput) {
             return back()->withErrors([
                 'email_belajar' => 'Email Akun Belajar tidak cocok dengan pemilik NIS ' . $nisInput . '!',
             ])->withInput();

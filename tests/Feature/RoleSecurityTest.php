@@ -84,4 +84,27 @@ class RoleSecurityTest extends TestCase
         $response->assertRedirect('/siswa/dashboard');
         $response->assertSessionHas('error');
     }
+
+    public function test_admin_can_delete_aduan(): void
+    {
+        $admin = User::where('role', 'admin')->first();
+        $aduan = \App\Models\Aduan::first();
+
+        $response = $this->actingAs($admin)->delete('/admin/aduan/' . $aduan->id);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+        $this->assertDatabaseMissing('aduan', ['id' => $aduan->id]);
+    }
+
+    public function test_siswa_cannot_delete_aduan(): void
+    {
+        $siswa = User::where('role', 'siswa')->first();
+        $aduan = \App\Models\Aduan::first();
+
+        $response = $this->actingAs($siswa)->delete('/admin/aduan/' . $aduan->id);
+
+        $response->assertRedirect('/siswa/dashboard');
+        $this->assertDatabaseHas('aduan', ['id' => $aduan->id]);
+    }
 }

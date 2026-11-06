@@ -102,6 +102,7 @@
     </style>
 </head>
 <body>
+    @if(request('download') !== 'pdf')
     <!-- Tombol Cetak Browser untuk Mode Web Preview -->
     <div class="no-print" style="margin-bottom: 20px; padding: 12px; background: #FFE500; border: 2px solid #0A0A0A; font-family: sans-serif; display: flex; justify-content: space-between; align-items: center;">
         <div>
@@ -119,6 +120,7 @@
             </button>
         </div>
     </div>
+    @endif
 
     <!-- KOP SURAT RESMI -->
     <table class="kop-table">

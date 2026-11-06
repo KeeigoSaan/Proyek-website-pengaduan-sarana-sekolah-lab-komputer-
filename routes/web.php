@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AduanController::class, 'adminDashboard'])->name('dashboard');
         Route::post('/aduan/{id}/status', [AduanController::class, 'updateStatus'])->name('aduan.status');
+        Route::delete('/aduan/{id}', [AduanController::class, 'destroy'])->name('aduan.destroy');
         Route::get('/laporan/excel', [AduanController::class, 'exportExcel'])->name('laporan.excel');
         Route::get('/laporan/cetak', [AduanController::class, 'cetakLaporan'])->name('laporan.cetak');
     });

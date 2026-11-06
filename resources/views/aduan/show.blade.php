@@ -18,11 +18,11 @@
                     {{ $aduan->kode_aduan }}
                 </span>
                 <span class="text-xs font-bold px-2.5 py-1 border-2 border-black 
-                    @if($aduan->kategori->nama_kategori === 'Hardware') bg-[#3D5AFE] text-white 
-                    @elseif($aduan->kategori->nama_kategori === 'Software') bg-[#FFE500] text-black 
-                    @elseif($aduan->kategori->nama_kategori === 'Jaringan') bg-[#FF3EA5] text-white 
+                    @if(($aduan->kategori?->nama_kategori ?? '') === 'Hardware') bg-[#3D5AFE] text-white 
+                    @elseif(($aduan->kategori?->nama_kategori ?? '') === 'Software') bg-[#FFE500] text-black 
+                    @elseif(($aduan->kategori?->nama_kategori ?? '') === 'Jaringan') bg-[#FF3EA5] text-white 
                     @else bg-[#B4FF00] text-black @endif">
-                    {{ $aduan->kategori->nama_kategori }}
+                    {{ $aduan->kategori?->nama_kategori ?? 'Umum' }}
                 </span>
             </div>
 
@@ -57,16 +57,16 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-[#F5F3EE] p-4 border-2 border-[#0A0A0A] mb-6 text-xs font-semibold">
             <div>
                 <span class="text-neutral-500 block text-[10px] uppercase font-display">PELAPOR:</span>
-                <span class="text-black font-bold">{{ $aduan->user->name }}</span>
-                @if($aduan->user->kelas)
+                <span class="text-black font-bold">{{ $aduan->user?->name ?? 'Anonim' }}</span>
+                @if($aduan->user?->kelas)
                     <span class="text-neutral-600 block">Kelas: {{ $aduan->user->kelas }}</span>
                 @endif
             </div>
 
             <div>
                 <span class="text-neutral-500 block text-[10px] uppercase font-display">PERANGKAT:</span>
-                <span class="text-black font-bold">🖥️ {{ $aduan->perangkat->kode_perangkat }}</span>
-                <span class="text-neutral-600 block">{{ $aduan->perangkat->nama_perangkat }} ({{ $aduan->perangkat->lokasi }})</span>
+                <span class="text-black font-bold">🖥️ {{ $aduan->perangkat?->kode_perangkat ?? '-' }}</span>
+                <span class="text-neutral-600 block">{{ $aduan->perangkat?->nama_perangkat ?? '-' }} ({{ $aduan->perangkat?->lokasi ?? '-' }})</span>
             </div>
 
             <div>
@@ -104,9 +104,18 @@
         <!-- Panel Perubahan Status untuk Admin -->
         @if(Auth::user()->role === 'admin')
             <div class="mt-8 pt-6 border-t-2 border-neutral-300">
-                <h3 class="font-display text-xs tracking-wider uppercase text-[#0A0A0A] mb-3">
-                    🛠️ AKSI STATUS (ADMIN / TEKNISI):
-                </h3>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                    <h3 class="font-display text-xs tracking-wider uppercase text-[#0A0A0A]">
+                        🛠️ AKSI STATUS (ADMIN / TEKNISI):
+                    </h3>
+                    <form action="{{ route('admin.aduan.destroy', $aduan->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus aduan {{ $aduan->kode_aduan }} secara permanen? Tindakan ini tidak dapat dibatalkan.')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-neo btn-neo-pink text-[11px] px-3 py-1.5 shadow-[2px_2px_0_#0A0A0A] hover:bg-red-600">
+                            🗑️ HAPUS ADUAN
+                        </button>
+                    </form>
+                </div>
                 <form action="{{ route('admin.aduan.status', $aduan->id) }}" method="POST" class="flex flex-wrap gap-2">
                     @csrf
                     <button type="submit" name="status" value="PENDING" class="btn-neo text-xs px-3 py-2 border-2 {{ $aduan->status === 'PENDING' ? 'bg-[#FFE500] ring-2 ring-black' : 'bg-white hover:bg-[#FFE500]' }}">
@@ -138,14 +147,14 @@
         <!-- Thread List -->
         <div class="space-y-4 mb-6">
             @forelse($aduan->tanggapan as $t)
-                <div class="p-4 border-2 border-[#0A0A0A] {{ $t->user->role === 'admin' ? 'bg-[#F5F3EE] ml-0 md:ml-6' : 'bg-white mr-0 md:mr-6' }} shadow-[3px_3px_0_#0A0A0A]">
+                <div class="p-4 border-2 border-[#0A0A0A] {{ ($t->user?->role ?? '') === 'admin' ? 'bg-[#F5F3EE] ml-0 md:ml-6' : 'bg-white mr-0 md:mr-6' }} shadow-[3px_3px_0_#0A0A0A]">
                     <div class="flex items-center justify-between mb-2 pb-2 border-b border-neutral-300">
                         <div class="flex items-center gap-2">
                             <span class="font-display text-xs text-[#0A0A0A]">
-                                {{ $t->user->name }}
+                                {{ $t->user?->name ?? 'User Terhapus' }}
                             </span>
-                            <span class="text-[10px] font-bold px-2 py-0.5 border border-black uppercase {{ $t->user->role === 'admin' ? 'bg-[#FFE500] text-black' : 'bg-white text-black' }}">
-                                {{ $t->user->role === 'admin' ? 'TEKNISI / ADMIN' : 'SISWA' }}
+                            <span class="text-[10px] font-bold px-2 py-0.5 border border-black uppercase {{ ($t->user?->role ?? '') === 'admin' ? 'bg-[#FFE500] text-black' : 'bg-white text-black' }}">
+                                {{ ($t->user?->role ?? '') === 'admin' ? 'TEKNISI / ADMIN' : 'SISWA' }}
                             </span>
                         </div>
                         <span class="text-[10px] font-semibold text-neutral-500">
