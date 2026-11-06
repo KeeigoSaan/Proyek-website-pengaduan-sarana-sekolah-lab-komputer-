@@ -111,16 +111,17 @@
             <!-- Upload Foto Bukti -->
             <div>
                 <label class="block font-display text-xs tracking-wider uppercase mb-1.5 text-[#0A0A0A]">
-                    FOTO BUKTI KERUSAKAN (OPSIONAL)
+                    FOTO BUKTI KERUSAKAN <span class="text-red-500">*</span>
                 </label>
                 <div class="border-[3px] border-dashed border-[#0A0A0A] bg-[#F5F3EE] p-4 text-center">
                     <input 
                         type="file" 
                         name="foto_bukti" 
                         accept="image/*"
+                        required
                         class="text-xs font-bold text-[#0A0A0A] file:mr-4 file:py-2 file:px-4 file:border-2 file:border-black file:text-xs file:font-display file:bg-[#FFE500] file:text-black hover:file:bg-[#0A0A0A] hover:file:text-white file:cursor-pointer"
                     >
-                    <p class="text-[10px] font-bold text-neutral-500 mt-2">Maksimal ukuran file: 2 MB (JPG, PNG, WEBP, JFIF)</p>
+                    <p class="text-[10px] font-bold text-neutral-500 mt-2">Wajib dilampirkan. Maksimal ukuran file: 2 MB (JPG, PNG, WEBP, JFIF)</p>
                 </div>
             </div>
 

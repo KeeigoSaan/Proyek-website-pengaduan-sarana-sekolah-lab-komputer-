@@ -100,68 +100,6 @@ class DatabaseSeeder extends Seeder
             'status'         => 'baik',
         ]);
 
-        // 5. Data Sampel Aduan (Sesuai Demo Figma AI)
-        // Aduan 1: IN_PROGRESS
-        $aduan1 = Aduan::create([
-            'kode_aduan'   => 'LAP-001',
-            'user_id'      => $siswa->id,
-            'perangkat_id' => $perangkats['PC-12']->id,
-            'kategori_id'  => $katHardware->id,
-            'judul'        => 'Monitor PC-12 Tidak Menyala',
-            'deskripsi'    => 'Monitor di komputer nomor 12 tidak bisa menyala sama sekali sejak kemarin. Sudah dicoba ganti kabel power tapi tetap tidak menyala.',
-            'status'       => 'IN_PROGRESS',
-        ]);
-
-        Tanggapan::create([
-            'aduan_id' => $aduan1->id,
-            'user_id'  => $siswa->id,
-            'catatan'  => 'Monitor benar-benar mati total, sudah cek kabelnya juga normal.',
-        ]);
-
-        Tanggapan::create([
-            'aduan_id' => $aduan1->id,
-            'user_id'  => $admin->id,
-            'catatan'  => 'Sudah dicek, kemungkinan panel LCD rusak. Sedang menunggu sparepart dari gudang.',
-        ]);
-
-        // Aduan 2: RESOLVED
-        $aduan2 = Aduan::create([
-            'kode_aduan'   => 'LAP-002',
-            'user_id'      => $siswa->id,
-            'perangkat_id' => $perangkats['PC-07']->id,
-            'kategori_id'  => $katHardware->id,
-            'judul'        => 'Keyboard PC-07 Tombol Lepas',
-            'deskripsi'    => 'Tombol huruf "A" dan "S" pada keyboard PC-07 sudah lepas dan hilang.',
-            'status'       => 'RESOLVED',
-        ]);
-
-        Tanggapan::create([
-            'aduan_id' => $aduan2->id,
-            'user_id'  => $siswa->id,
-            'catatan'  => 'Tombol A dan S lepas, susah buat ngetik.',
-        ]);
-
-        Tanggapan::create([
-            'aduan_id' => $aduan2->id,
-            'user_id'  => $admin->id,
-            'catatan'  => 'Keyboard sudah diganti dengan unit baru yang normal. Silakan digunakan.',
-        ]);
-
-        // Aduan 3: PENDING
-        $aduan3 = Aduan::create([
-            'kode_aduan'   => 'LAP-003',
-            'user_id'      => $siswa->id,
-            'perangkat_id' => $perangkats['PC-03']->id,
-            'kategori_id'  => $katSoftware->id,
-            'judul'        => 'Aplikasi Photoshop Error PC-03',
-            'deskripsi'    => 'Aplikasi Adobe Photoshop CS6 langsung crash setiap kali dibuka. Sudah restart berkali-kali tapi tetap force close.',
-            'status'       => 'PENDING',
-        ]);
-
-        Tanggapan::create([
-            'aduan_id' => $aduan3->id,
-            'user_id'  => $siswa->id,
-            'catatan'  => 'Photoshop tidak bisa dibuka, langsung force close. Deadline tugas besok!',
-        ]);
+        // 5. Data Aduan dikosongkan agar pengguna dapat menginput aduan asli dengan foto bukti
     }
 }

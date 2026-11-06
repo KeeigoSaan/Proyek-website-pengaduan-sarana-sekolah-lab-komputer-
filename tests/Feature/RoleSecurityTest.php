@@ -88,7 +88,17 @@ class RoleSecurityTest extends TestCase
     public function test_admin_can_delete_aduan(): void
     {
         $admin = User::where('role', 'admin')->first();
-        $aduan = \App\Models\Aduan::first();
+        $siswa = User::where('role', 'siswa')->first();
+        $aduan = \App\Models\Aduan::create([
+            'kode_aduan' => 'LAP-001',
+            'user_id' => $siswa->id,
+            'perangkat_id' => 1,
+            'kategori_id' => 1,
+            'judul' => 'Test Aduan Hapus',
+            'deskripsi' => 'Deskripsi test kerusakan minimal 20 karakter',
+            'foto_bukti' => 'foto_aduan/test.jpg',
+            'status' => 'PENDING',
+        ]);
 
         $response = $this->actingAs($admin)->delete('/admin/aduan/' . $aduan->id);
 
@@ -100,7 +110,16 @@ class RoleSecurityTest extends TestCase
     public function test_siswa_cannot_delete_aduan(): void
     {
         $siswa = User::where('role', 'siswa')->first();
-        $aduan = \App\Models\Aduan::first();
+        $aduan = \App\Models\Aduan::create([
+            'kode_aduan' => 'LAP-001',
+            'user_id' => $siswa->id,
+            'perangkat_id' => 1,
+            'kategori_id' => 1,
+            'judul' => 'Test Aduan Siswa',
+            'deskripsi' => 'Deskripsi test kerusakan minimal 20 karakter',
+            'foto_bukti' => 'foto_aduan/test.jpg',
+            'status' => 'PENDING',
+        ]);
 
         $response = $this->actingAs($siswa)->delete('/admin/aduan/' . $aduan->id);
 

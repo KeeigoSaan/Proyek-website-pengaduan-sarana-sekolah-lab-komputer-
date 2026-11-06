@@ -98,38 +98,69 @@
         @forelse($aduanList as $aduan)
             <div class="neo-box p-5 bg-white hover:translate-x-1 hover:-translate-y-1 transition-transform">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div class="space-y-2 flex-1">
-                        <div class="flex flex-wrap items-center gap-2">
-                            <span class="font-mono text-xs font-black bg-[#F5F3EE] px-2 py-0.5 border border-[#0A0A0A]">
-                                {{ $aduan->kode_aduan }}
-                            </span>
-                            <span class="text-xs font-bold px-2 py-0.5 border border-[#0A0A0A] 
-                                @if($aduan->kategori->nama_kategori === 'Hardware') bg-[#3D5AFE] text-white 
-                                @elseif($aduan->kategori->nama_kategori === 'Software') bg-[#FFE500] text-black 
-                                @elseif($aduan->kategori->nama_kategori === 'Jaringan') bg-[#FF3EA5] text-white 
-                                @else bg-[#B4FF00] text-black @endif">
-                                {{ $aduan->kategori->nama_kategori }}
-                            </span>
-                            <span class="text-xs font-black px-2 py-0.5 border border-[#0A0A0A] bg-white">
-                                🖥️ {{ $aduan->perangkat->kode_perangkat }}
-                            </span>
-                        </div>
+                    
+                    <!-- Left: Foto Bukti Preview + Detail Info -->
+                    <div class="flex flex-col sm:flex-row gap-4 flex-1 items-start">
+                        <!-- Thumbnail Foto Bukti -->
+                        @if($aduan->foto_bukti)
+                            <div class="shrink-0 group">
+                                <a href="{{ route('aduan.show', $aduan->id) }}" class="block" title="Klik untuk lihat detail dan foto penuh">
+                                    <div class="w-24 h-24 sm:w-28 sm:h-28 bg-[#F5F3EE] border-[3px] border-[#0A0A0A] shadow-[3px_3px_0_#0A0A0A] overflow-hidden relative group-hover:shadow-[4px_4px_0_#FFE500] transition-all">
+                                        <img 
+                                            src="{{ asset('storage/' . $aduan->foto_bukti) }}" 
+                                            alt="Foto Bukti {{ $aduan->kode_aduan }}" 
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
+                                            loading="lazy"
+                                        >
+                                        <span class="absolute bottom-0 inset-x-0 bg-[#0A0A0A]/90 text-[#FFE500] text-[9px] font-display text-center py-0.5 tracking-wider uppercase">
+                                            📷 BUKTI FOTO
+                                        </span>
+                                    </div>
+                                </a>
+                            </div>
+                        @else
+                            <div class="shrink-0 hidden sm:flex w-24 h-24 sm:w-28 sm:h-28 bg-[#F5F3EE] border-2 border-dashed border-neutral-300 items-center justify-center text-center p-2">
+                                <div>
+                                    <span class="text-2xl block opacity-40">📷</span>
+                                    <span class="text-[9px] font-bold text-neutral-400 uppercase tracking-tight">Tanpa Foto</span>
+                                </div>
+                            </div>
+                        @endif
 
-                        <h3 class="font-display text-lg text-[#0A0A0A]">
-                            {{ $aduan->judul }}
-                        </h3>
+                        <!-- Detail Info -->
+                        <div class="space-y-2 flex-1 min-w-0">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="font-mono text-xs font-black bg-[#F5F3EE] px-2 py-0.5 border border-[#0A0A0A]">
+                                    {{ $aduan->kode_aduan }}
+                                </span>
+                                <span class="text-xs font-bold px-2 py-0.5 border border-[#0A0A0A] 
+                                    @if(($aduan->kategori?->nama_kategori ?? '') === 'Hardware') bg-[#3D5AFE] text-white 
+                                    @elseif(($aduan->kategori?->nama_kategori ?? '') === 'Software') bg-[#FFE500] text-black 
+                                    @elseif(($aduan->kategori?->nama_kategori ?? '') === 'Jaringan') bg-[#FF3EA5] text-white 
+                                    @else bg-[#B4FF00] text-black @endif">
+                                    {{ $aduan->kategori?->nama_kategori ?? 'Umum' }}
+                                </span>
+                                <span class="text-xs font-black px-2 py-0.5 border border-[#0A0A0A] bg-white">
+                                    🖥️ {{ $aduan->perangkat?->kode_perangkat ?? '-' }}
+                                </span>
+                            </div>
 
-                        <p class="text-xs text-neutral-600 line-clamp-2">
-                            {{ $aduan->deskripsi }}
-                        </p>
+                            <h3 class="font-display text-lg text-[#0A0A0A]">
+                                {{ $aduan->judul }}
+                            </h3>
 
-                        <div class="text-[11px] font-bold text-neutral-400">
-                            Dilaporkan pada: {{ $aduan->created_at->format('d M Y, H:i') }} WIB
+                            <p class="text-xs text-neutral-600 line-clamp-2">
+                                {{ $aduan->deskripsi }}
+                            </p>
+
+                            <div class="text-[11px] font-bold text-neutral-400">
+                                Dilaporkan pada: {{ $aduan->created_at->format('d M Y, H:i') }} WIB
+                            </div>
                         </div>
                     </div>
 
                     <!-- Right Column: Status & Action -->
-                    <div class="flex md:flex-col items-center md:items-end justify-between gap-3 pt-3 md:pt-0 border-t md:border-t-0 border-neutral-200">
+                    <div class="flex md:flex-col items-center md:items-end justify-between gap-3 pt-3 md:pt-0 border-t md:border-t-0 border-neutral-200 shrink-0">
                         @if($aduan->status === 'PENDING')
                             <span class="font-display text-xs px-3 py-1 bg-[#FFE500] text-black border-2 border-[#0A0A0A] shadow-[2px_2px_0_#0A0A0A]">
                                 PENDING

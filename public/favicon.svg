@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Neobrutalist Yellow Box with Bold Outline -->
+  <rect x="4" y="4" width="56" height="56" rx="8" fill="#FFE500" stroke="#0A0A0A" stroke-width="6"/>
+  <!-- Bold Lightning Bolt Icon (Sigap) -->
+  <polygon points="35,11 18,34 31,34 27,53 47,27 33,27" fill="#0A0A0A"/>
+</svg>

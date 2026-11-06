@@ -59,14 +59,15 @@ class AduanController extends Controller
             'perangkat_id' => 'required|exists:perangkat,id',
             'kategori_id'  => 'required|exists:kategori_kerusakan,id',
             'deskripsi'    => 'required|string|min:20',
-            'foto_bukti'   => 'nullable|image|mimes:jpeg,png,jpg,webp,jfif|max:2048',
+            'foto_bukti'   => 'required|image|mimes:jpeg,png,jpg,webp,jfif|max:2048',
         ], [
             'judul.required'        => 'Judul aduan wajib diisi.',
             'perangkat_id.required' => 'Pilih perangkat komputer yang bermasalah.',
             'kategori_id.required'  => 'Pilih kategori kerusakan.',
             'deskripsi.required'    => 'Deskripsi kerusakan wajib diisi.',
             'deskripsi.min'         => 'Deskripsi minimal 20 karakter agar jelas bagi teknisi.',
-            'foto_bukti.image'      => 'File bukti harus berupa gambar (JPG, PNG, WEBP).',
+            'foto_bukti.required'   => 'Foto bukti kerusakan wajib dilampirkan.',
+            'foto_bukti.image'      => 'File bukti harus berupa gambar (JPG, PNG, WEBP, JFIF).',
             'foto_bukti.max'        => 'Ukuran foto maksimal 2 MB.',
         ]);
 

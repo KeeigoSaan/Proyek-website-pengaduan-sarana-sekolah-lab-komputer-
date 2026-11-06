@@ -24,6 +24,20 @@
         <div class="inline-block bg-[#F5F3EE] border border-black px-1.5 py-0.5 text-[10px] font-bold">
             🖥️ {{ $aduan->perangkat?->kode_perangkat ?? '-' }}
         </div>
+
+        @if($aduan->foto_bukti)
+            <div class="mt-2 w-full h-24 bg-[#F5F3EE] border-2 border-[#0A0A0A] overflow-hidden relative group">
+                <img 
+                    src="{{ asset('storage/' . $aduan->foto_bukti) }}" 
+                    alt="Bukti {{ $aduan->kode_aduan }}" 
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-150"
+                    loading="lazy"
+                >
+                <span class="absolute bottom-1 right-1 bg-[#0A0A0A] text-[#FFE500] text-[8px] font-display px-1.5 py-0.5 border border-[#FFE500]">
+                    📷 FOTO BUKTI
+                </span>
+            </div>
+        @endif
     </div>
 
     <!-- Quick Status Changer / Actions -->
