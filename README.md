@@ -1,59 +1,151 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ⚡ SIGAP-LAB — Sistem Aduan Laboratorium Komputer SMK
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel 12" />
+  <img src="https://img.shields.io/badge/PHP-8.2%2B-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP 8.2+" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-3.x-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Database-MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL" />
+  <img src="https://img.shields.io/badge/Style-Neobrutalism-FFE500?style=for-the-badge&logoColor=black" alt="Neobrutalism" />
 </p>
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📌 Tentang Proyek
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**SIGAP-LAB** adalah aplikasi web pelaporan dan manajemen kendala sarana laboratorium komputer (PC, proyektor, printer, jaringan internet) yang dirancang khusus untuk lingkungan **SMK (Sekolah Menengah Kejuruan)**. 
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Aplikasi ini mengatasi kendala pelaporan manual yang kerap tercecer dengan menyediakan sistem pelaporan terstruktur berfoto bukti, alur kerja teknisi berbasis **Kanban Board**, diskusi dua arah, serta pencetakan laporan pertanggungjawaban resmi (PDF & Excel/CSV).
 
-## Learning Laravel
+Tampilan antarmuka mengusung konsep desain modern **Neobrutalism** (kontras tinggi, outline tegas, bayangan solid, dan tipografi tebal) yang ramah pengguna baik di desktop maupun layar sentuh ponsel.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 👥 Pengguna & Hak Akses (Multi-Role)
 
-## Laravel Sponsors
+| Peran (Role) | Kredensial Login | Aktivitas Utama |
+| :--- | :--- | :--- |
+| **Siswa / Pelapor** | NIS atau Email Belajar + Password | • Registrasi mandiri terverifikasi ganda (NIS + Domain Akun Belajar)<br>• Membuat laporan kerusakan sarana lab disertai foto fisik<br>• Memantau perkembangan status perbaikan secara *real-time*<br>• Berkomunikasi via thread komentar dengan teknisi lab |
+| **Admin / Teknisi Lab** | Email Dinas + Password | • Mengelola aduan dengan papan alur **Kanban** 4 kolom<br>• Memperbarui status (*Pending*, *Diproses*, *Selesai*, *Ditolak*) dengan riwayat otomatis<br>• Menghapus aduan tidak valid beserta file buktinya<br>• Mengekspor rekapitulasi data ke **Excel (CSV)** & mencetak **PDF resmi ber-Kop Surat** |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🚀 Fitur Utama
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+1. **🔐 Autentikasi Fleksibel & Registrasi Terverifikasi Ganda:**
+   - Login fleksibel mendeteksi otomatis input berupa **NIS** (siswa) atau **Email** (admin).
+   - Registrasi siswa aman dengan validasi ke master data sekolah (`siswa_sekolah`) dan verifikasi domain `@smk.belajar.id`.
+2. **📋 Pelaporan Kerusakan Lengkap (Siswa):**
+   - Kode tiket aduan otomatis (`LAP-001`, `LAP-002`, dst.).
+   - Pilihan unit perangkat komputer lab (PC-01 s/d PC-24, Printer, Proyektor).
+   - Pengelompokan kategori (*Hardware*, *Software*, *Jaringan*, *Lainnya*).
+   - Unggah foto bukti fisik (JPG, PNG, WEBP, JFIF maks 2MB).
+3. **📊 Kanban Board Manajemen Status (Admin):**
+   - 4 Kolom visual: **⏳ PENDING**, **🔧 DIPROSES**, **✅ SELESAI**, **✕ DITOLAK**.
+   - Perubahan status cepat (*Quick Status Dropdown*) langsung dari kartu Kanban.
+   - Setiap perubahan status otomatis tercatat di log riwayat (*Audit Trail*).
+4. **💬 Diskusi Interaktif Dua Arah:**
+   - Thread tanggapan langsung antara siswa pelapor dan teknisi pada detail laporan.
+   - Proteksi keamanan: Siswa hanya dapat membuka dan merespons tiket aduan miliknya sendiri.
+5. **🖨️ Ekspor & Pelaporan Lengkap:**
+   - **Ekspor Excel (CSV):** Dilengkapi *UTF-8 BOM* agar rapi di Microsoft Excel dan proteksi *CSV formula injection*.
+   - **Cetak Laporan PDF:** Menggunakan `barryvdh/laravel-dompdf` berstandar dokumen resmi sekolah lengkap dengan Kop Surat dan tanda tangan koordinator lab.
+6. **🗑️ Manajemen Pembersihan Data:**
+   - Fitur hapus aduan permanen untuk Admin yang otomatis membersihkan berkas foto fisik di penyimpanan.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🛠️ Spesifikasi Teknologi
 
-## Code of Conduct
+- **Backend:** Laravel 12.x (PHP 8.2+)
+- **Frontend:** Blade Templates, Tailwind CSS (Neobrutalism Design System), Google Fonts (*Archivo Black* & *Archivo*)
+- **Database:** MySQL
+- **PDF Engine:** `barryvdh/laravel-dompdf`
+- **Testing:** PHPUnit / Laravel Feature Tests (`RoleSecurityTest`)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 💻 Panduan Instalasi Lokal
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Ikuti langkah-langkah berikut untuk menjalankan project ini di komputer lokal (XAMPP):
 
-## License
+### 1. Clone Repositori
+```bash
+git clone https://github.com/KeeigoSaan/Proyek-website-pengaduan-sarana-sekolah-lab-komputer-.git
+cd Proyek-website-pengaduan-sarana-sekolah-lab-komputer-
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 2. Pasang Dependensi Composer
+```bash
+composer install
+```
+
+### 3. Konfigurasi Environment (`.env`)
+Salin file template `.env.example` menjadi `.env`:
+```bash
+cp .env.example .env
+```
+Sesuaikan konfigurasi database MySQL pada file `.env`:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=sigap_lab
+DB_USERNAME=root
+DB_PASSWORD=
+
+SESSION_DRIVER=file
+```
+
+### 4. Generate Kunci Aplikasi & Link Storage
+```bash
+php artisan key:generate
+php artisan storage:link
+```
+
+### 5. Migrasi & Isi Data Awal (Seeder)
+Pastikan service **MySQL** di XAMPP sudah berjalan (*Start*), lalu jalankan:
+```bash
+php artisan migrate:fresh --seed
+```
+
+### 6. Jalankan Server Pengembangan
+```bash
+php artisan serve
+```
+Akses aplikasi melalui browser di: **`http://127.0.0.1:8000`**
+
+---
+
+## 🔑 Akun Demo (Bawaan Seeder)
+
+Untuk keperluan pengujian atau demonstrasi penguji, gunakan akun default berikut:
+
+| Peran | Akun / NIS / Email | Password |
+| :--- | :--- | :--- |
+| **Admin / Teknisi Lab** | `admin@smk.sch.id` | `admin123` |
+| **Siswa Terdaftar (Keigo)** | `10245` *(atau `keigo@smk.belajar.id`)* | `siswa123` |
+| **Siswa Baru (Uji Registrasi)** | NIS: `10246` / Email: `siti.nuraini@smk.belajar.id` | *(Buat saat registrasi)* |
+
+---
+
+## 🧪 Menjalankan Pengujian (Testing)
+
+Untuk memastikan seluruh hak akses peran dan keamanan berjalan normal:
+```bash
+php artisan test
+```
+
+---
+
+## 👨‍💻 Pengembang
+
+Proyek Akhir Web - Kejuruan Rekayasa Perangkat Lunak (RPL):
+- **Nama Peserta Didik:** KEIGO AVREL PURNOMO
+- **Kelas:** XII RPL A / XII RPL 2
+- **Sekolah:** SMK Negeri 5
+
+---
+
+## 📄 Lisensi
+
+Proyek ini dibuat untuk keperluan pendidikan dan ujian kompetensi kejuruan di bawah lisensi [MIT License](LICENSE).
